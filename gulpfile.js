@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var plumber = require('gulp-plumber');
 
 // JS
 var uglify = require('gulp-uglify');
@@ -35,8 +36,10 @@ gulp.task('js:build', function () {
         paths.bower.jquery,
         paths.src.js + '/**/*.js'
     ])
-        .pipe(rename('main.js'))
-        .pipe(uglify({mangle: false}))
+        .pipe(plumber())
+        .pipe(concat('main.js'))
+        .pipe(rename('main.min.js'))
+        .pipe(uglify())
         .pipe(gulp.dest(paths.dist.js));
 });
 
@@ -48,6 +51,7 @@ gulp.task('css:less', function () {
     return gulp.src([
         paths.src.less + '/**/*.less'
     ])
+        .pipe(plumber())
         .pipe(less({}))
         .pipe(concat('main.css'))
         .pipe(gulp.dest(paths.dist.css));
@@ -55,6 +59,7 @@ gulp.task('css:less', function () {
 
 gulp.task('css:build', ['css:less'], function () {
     return gulp.src(paths.dist.css + '/main.css')
+        .pipe(plumber())
         .pipe(prefixer('last 10 versions', 'ie 9'))
         .pipe(minifycss({keepBreaks: false}))
         .pipe(rename('main.min.css'))
