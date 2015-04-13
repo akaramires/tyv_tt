@@ -1,0 +1,19 @@
+{
+  "name": "Tyv_tt",
+  "version": "1.0.0",
+  "authors": [
+    "akaramires <e.abdurayimov@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {},
+  "dependencies": {
+    "jquery": "2.1.3"
+  }
+}
