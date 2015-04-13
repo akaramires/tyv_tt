@@ -2,11 +2,23 @@ body {
   font-family: Verdana, sans-serif;
   font-size: 14px;
 }
+pre {
+  white-space: pre-wrap;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  padding: 1px 4px;
+  color: #222;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
 .stars .rating {
   list-style: none;
   margin: 0 0 20px;
   padding: 0;
-  width: 80px;
+  width: 96px;
   height: 16px;
 }
 .stars .rating li {
@@ -16,14 +28,14 @@ body {
   float: right;
   text-indent: -96px;
   cursor: pointer;
-  background: url("../img/stars.png") -17px 0 no-repeat;
-}
-.stars .rating li:hover,
-.stars .rating li:hover ~ li {
-  background-position: 0;
+  background: url("../img/stars.png") -18px 0 no-repeat;
 }
 .stars .rating li.active,
 .stars .rating li.active ~ li {
+  background-position: 0;
+}
+.stars .rating li:hover,
+.stars .rating li:hover ~ li {
   background-position: 0;
 }
 .stars .rating li.current {

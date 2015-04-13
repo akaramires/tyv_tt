@@ -3,6 +3,19 @@ body {
   font-size: 14px;
 }
 
+pre {
+  white-space: pre-wrap;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  padding: 1px 4px;
+  color: #222;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
 .stars {
   @starSize: 16px;
 
@@ -10,7 +23,7 @@ body {
     list-style: none;
     margin: 0 0 20px;
     padding: 0;
-    width: @starSize * 5;
+    width: @starSize * 6;
     height: @starSize;
     li {
       display: block;
@@ -19,13 +32,13 @@ body {
       float: right;
       text-indent: -96px;
       cursor: pointer;
-      background: url("../img/stars.png") -17px 0 no-repeat;
-      &:hover,
-      &:hover ~ li {
-        background-position: 0;
-      }
+      background: url("../img/stars.png") -18px 0 no-repeat;
       &.active,
       &.active ~ li {
+        background-position: 0;
+      }
+      &:hover,
+      &:hover ~ li {
         background-position: 0;
       }
       &.current {

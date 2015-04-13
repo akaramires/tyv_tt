@@ -7,116 +7,116 @@
 
     "use strict";
 
-    $.fn.rating = function (options) {
+    var Rating = function (element, options) {
+        var defaults = {
+            background : 'transparent',
+            showCurrent: false,
+            verbose    : false
+        };
 
-        var
-            $allSelectors = $(this),
-            defaults = {
-                background : 'transparent',
-                showCurrent: false,
-                verbose    : false
-            }
+        var $module = $(element),
+            obj = this,
+
+            settings = $.extend(true, {}, defaults, options),
+            $percentLabel = null,
+            stars_count = 0
             ;
 
-        $allSelectors
-            .each(function () {
-                var
-                    settings = $.extend(true, {}, defaults, options),
-                    $rating = $(this),
-                    $percentLabel = null,
-                    stars_count = 0,
-                    module
-                    ;
+        this.initialize = function () {
+            verbose('Initializing rating', settings);
 
-                module = {
-                    initialize: function () {
-                        module.verbose('Initializing rating', settings);
+            $module.addClass('rating');
+            stars_count = $module.find('> li:not(.current)').length;
 
-                        $rating.addClass('rating');
-                        module.assignEvents();
+            stylization();
+            assignEvents();
 
-                        stars_count = $rating.find('> li:not(.current)').length;
-                    },
+            if (settings.showCurrent) {
+                showPercentLabel();
+            }
+        };
 
-                    has: {
-                        percentLabel: function () {
-                            return ($rating.find('.current span').length > 0);
-                        },
-                        activeStar  : function () {
-                            return ($rating.find('.active').length > 0);
-                        }
-                    },
+        var hasPercentLabel = function () {
+            return ($module.find('.current span').length > 0);
+        };
 
-                    create: {
-                        percentLabel: function () {
-                            $rating
-                                .css('width', (parseFloat($rating.width()) + 16) + 'px')
-                                .prepend('<li class="current"><span></span></li>')
-                            ;
+        var hasActiveStar = function () {
+            return ($module.find('.active').length > 0);
+        };
 
-                            $percentLabel = $rating.find('li.current span');
+        var createPercentLabel = function () {
+            $module
+                .prepend('<li class="current"><span></span></li>')
+            ;
 
-                            module.verbose('Creating label', $percentLabel);
-                        }
-                    },
+            $percentLabel = $module.find('li.current span');
 
-                    showPercentLabel: function () {
-                        if (!module.has.percentLabel()) {
-                            module.create.percentLabel();
-                        }
+            verbose('Creating label', $percentLabel);
+        };
 
-                        module.calcActivePercent();
-                    },
+        var stylization = function () {
+            verbose('Stylization rating', settings);
 
-                    calcActivePercent: function () {
-                        if (module.has.activeStar()) {
-                            module.calcCurrentPercent($rating.find('.active').index());
-                        } else {
-                            module.calcCurrentPercent(stars_count);
-                        }
-                    },
+            console.log($module);
+            $module
+                .css({'background': settings.background})
+            ;
+        };
 
-                    calcCurrentPercent: function (index) {
-                        if ($percentLabel) {
-                            var percent = (stars_count - index + 1) * (100 / stars_count);
-                            $percentLabel.text(percent + '%');
-                        }
-                    },
+        var showPercentLabel = function () {
+            if (!hasPercentLabel()) {
+                createPercentLabel();
+            }
 
-                    assignEvents: function () {
-                        module.verbose('Assigning events', settings);
+            calcActivePercent();
+        };
 
-                        $rating.find('li:not(.current)').hover(function () {
-                            module.calcCurrentPercent($(this).index());
-                        });
+        var calcActivePercent = function () {
+            if (hasActiveStar()) {
+                calcCurrentPercent($module.find('.active').index());
+            } else {
+                calcCurrentPercent(stars_count);
+            }
+        };
 
-                        $rating.mouseleave(function () {
-                            module.calcActivePercent();
-                        });
-                    },
+        var calcCurrentPercent = function (index) {
+            if ($percentLabel) {
+                var percent = (stars_count - index + 1) * (100 / stars_count);
+                $percentLabel.text(percent + '%');
+            }
+        };
 
-                    verbose: function () {
-                        if (settings.verbose) {
-                            console.info(arguments);
-                        }
-                    }
-                };
+        var assignEvents = function () {
+            verbose('Assigning events', settings);
 
-                if (!$rating.hasClass('rating')) {
-                    module.initialize();
-
-                    if (settings.showCurrent) {
-                        module.showPercentLabel();
-                    }
-                }
+            $module.find('li:not(.current)').hover(function () {
+                calcCurrentPercent($(this).index());
             });
 
-        return this;
+            $module.mouseleave(function () {
+                calcActivePercent();
+            });
+        };
+
+        var verbose = function () {
+            if (settings.verbose) {
+                console.info(arguments);
+            }
+        };
+    };
+
+    $.fn.rating = function (options) {
+        console.log($(this.selector));
+        var $rating = new Rating(this, options);
+
+        $rating.initialize();
+
+        return $rating;
     };
 
     $('.js-rating').rating();
 
-    $('.js-rating-red').rating({
+    $('.js-rating-gray').rating({
         background: 'lightgray'
     });
 
