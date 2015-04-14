@@ -1,21 +1,21 @@
-.progress {
-  &-bar {
+@import "mixins";
+
+.section-progress {
+  .progress-bar {
     border: 1px solid #eee;
     height: 15px;
     background: #fff;
-    border-radius: 8px;
-    box-shadow: inset 0 1px 1px lightgray;
     max-width: 300px;
     position: relative;
     margin: 0 0 20px;
+    .inner-shadow(1px, 1px, 1px, 0, .25);
+    .border-radius(8px);
+
     &-progress {
       display: inline-block;
       height: 100%;
-      border-radius: 8px;
-      box-shadow: 0 2px 2px rgba(255, 255, 255, .7) inset,
-        0 -2px 2px rgba(255, 255, 255, .7) inset;
-      background-color: #a5df41;
-      background-image: linear-gradient(top, #a5df41, #3CC214);
+      background: -webkit-linear-gradient(bottom, #59AB1E 1%, #8BDA1A 20%, #7BD517 22%, #3CC214 41%, #29BF14 62%, #ABFF58 100%);
+      .border-radius(8px);
     }
     &-label {
       position: absolute;

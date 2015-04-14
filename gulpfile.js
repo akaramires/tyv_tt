@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var plumber = require('gulp-plumber');
-var addsrc = require('gulp-add-src');
 
 // JS
 var uglify = require('gulp-uglify');
@@ -63,7 +62,6 @@ gulp.task('css:less', function () {
 gulp.task('css:build', ['css:less'], function () {
     return gulp.src(paths.dist.css + '/main.css')
         .pipe(plumber())
-        .pipe(prefixer('last 10 versions', 'ie 9'))
         .pipe(minifycss({keepBreaks: false}))
         .pipe(rename('main.min.css'))
         .pipe(gulp.dest(paths.dist.css));
