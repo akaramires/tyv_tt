@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var plumber = require('gulp-plumber');
+var addsrc = require('gulp-add-src');
 
 // JS
 var uglify = require('gulp-uglify');
@@ -34,10 +35,12 @@ var paths = {
 gulp.task('js:build', function () {
     return gulp.src([
         paths.bower.jquery,
-        paths.src.js + '/**/*.js'
+        paths.src.js + '/plugin.*.js',
+        paths.src.js + '/app.js'
     ])
         .pipe(plumber())
         .pipe(concat('main.js'))
+        .pipe(gulp.dest(paths.dist.js))
         .pipe(rename('main.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(paths.dist.js));

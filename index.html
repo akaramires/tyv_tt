@@ -8,7 +8,7 @@
 <body>
 
 <div class="stars">
-    <ul class="rating">
+    <ul class="rating default">
         <li class="rating_item rating_item_rating">
             Рейтинг: <span>0</span>
         </li>
@@ -28,6 +28,43 @@
             <a href="#" class="rating_item_link">5</a>
         </li>
     </ul>
+
+    <div class="clearfix"></div>
+
+    <ul class="rating yellow">
+        <li class="rating_item rating_item_rating">
+            Рейтинг: <span>0</span>
+        </li>
+        <li class="rating_item">
+            <a href="#" class="rating_item_link">1</a>
+        </li>
+        <li class="rating_item">
+            <a href="#" class="rating_item_link">2</a>
+        </li>
+        <li class="rating_item rating_item_current">
+            <a href="#" class="rating_item_link">3</a>
+        </li>
+        <li class="rating_item">
+            <a href="#" class="rating_item_link">4</a>
+        </li>
+        <li class="rating_item">
+            <a href="#" class="rating_item_link">5</a>
+        </li>
+    </ul>
+</div>
+
+<div class="progress">
+    <div class="progress-bar default">
+        <span class="progress-bar-progress"></span>
+        <span class="progress-bar-label">0%</span>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="progress-bar with-value" data-current="40" data-total="50">
+        <span class="progress-bar-progress"></span>
+        <span class="progress-bar-label">0%</span>
+    </div>
 </div>
 
 <script type="application/javascript" src="dist/js/main.min.js"></script>
