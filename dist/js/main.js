@@ -196,23 +196,35 @@
 
 (function ($) {
 
-    // Rating
-    $('.rating.default').rating();
+    $(document).ready(function () {
+        // Rating
+        $('.rating.default').rating();
 
-    $('.rating.yellow').rating({
-        background: '#ffff00'
-    });
+        $('.rating.yellow').rating({
+            background: '#ffff00'
+        });
 
-    // Progress
-    var progress_default = $('.progress-bar.default').progressBar();
+        // Progress
+        var progress_default = $('.progress-bar.default').progressBar();
 
-    $('.progress-bar.with-value').progressBar({
-        duration: 5000
-    });
+        $('.progress-bar.with-value').progressBar({
+            duration: 5000
+        });
 
-    $('.js-set-progress').on('click', function (e) {
-        progress_default.refresh($(this).data('value'), 100);
+        $('.js-set-progress').on('click', function (e) {
+            progress_default.refresh($(this).data('value'), 100);
+        });
 
+        // Browsers
+        $('.browsers').find('.browsers_item__icon img').error(function () {
+            $(this)
+                .closest('.browsers_item__icon')
+                .hide()
+                .closest('.browsers_item')
+                .find('.browsers_item__placeholder')
+                .css('display', 'table')
+            ;
+        });
     });
 
 })(jQuery);
