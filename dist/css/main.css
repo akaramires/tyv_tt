@@ -9,6 +9,7 @@ body ul {
 }
 body ul li {
   font-size: 12px;
+  padding: 0 0 5px;
   list-style-type: none;
 }
 .clearfix {
@@ -228,4 +229,41 @@ body ul li {
 .rating_item_active .rating_item_link,
 .rating_item_current .rating_item_link {
   background: url('../img/stars.png') 0 -16px no-repeat;
+}
+
+.text {
+  display: block;
+  clear: both;
+  padding: 0 20px 20px;
+}
+.text h2 {
+  padding: 0 16px;
+  color: #545454;
+}
+.text h2,
+.text-content {
+  column-count: 2;
+  -moz-column-count: 2;
+  -moz-column-gap: 40px;
+  -webkit-column-count: 2;
+  -webkit-column-gap: 40px;
+}
+.text-content {
+  color: #040404;
+  text-indent: 15px;
+}
+.text-content p {
+  padding: 0 16px;
+}
+.text ul {
+  padding: 0;
+}
+.text ul li:before {
+  content: "— ";
+}
+.text ul li.dotted span {
+  border-bottom: dashed 1px black;
+}
+.text ul li a {
+  color: #0C77EE;
 }
