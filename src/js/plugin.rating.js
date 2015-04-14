@@ -57,7 +57,9 @@
             checkCurrent();
         };
 
-        var click = function () {
+        var click = function (e) {
+            e.preventDefault();
+
             $(this)
                 .addClass(itemCurrentClass)
                 .siblings()

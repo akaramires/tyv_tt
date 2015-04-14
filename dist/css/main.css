@@ -24,6 +24,41 @@ body ul li {
   display: inline-block;
   padding: 0 10px;
 }
+.tabs {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.tabs_titles {
+  list-style-type: none;
+  height: 30px;
+  padding: 0;
+}
+.tabs_titles_single {
+  float: left;
+  margin: 0 1px 0 0;
+  padding: 0;
+}
+.tabs_titles_single_link {
+  background: #e2e2e2;
+  line-height: 25px;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #000;
+  transition: background-color 0.5s ease;
+}
+.tabs_titles_single_link:hover {
+  background: #A3A3A3;
+}
+.tabs_titles_single_active .tabs_titles_single_link {
+  background: #A3A3A3;
+}
+.tabs_contents_single {
+  transition: background-color 0.5s ease;
+  background: #F5F5F5;
+  padding: 30px;
+  display: none;
+}
 
 
 .browsers {
