@@ -233,31 +233,48 @@ body ul li {
 }
 
 .text {
+  font-family: 'PT Sans', sans-serif;
   display: block;
   clear: both;
   padding: 0 20px 20px;
 }
 .text h2 {
-  padding: 0 16px;
-  color: #545454;
+  padding: 0 50% 0 16px;
+  color: #333333;
+  font-size: 24px;
 }
-.text h2,
+@media only screen and (max-width: 699px) {
+  .text h2 {
+    padding-right: 16px;
+  }
+}
 .text-content {
-  column-count: 2;
-  -moz-column-count: 2;
-  -moz-column-gap: 40px;
   -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
   -webkit-column-gap: 40px;
-}
-.text-content {
-  color: #040404;
-  text-indent: 15px;
+  -moz-column-gap: 40px;
+  color: #000000;
+  text-indent: 20px;
+  font-size: 16px;
 }
 .text-content p {
   padding: 0 16px;
+  margin-top: 0;
+}
+@media only screen and (max-width: 699px) {
+  .text-content {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+  }
 }
 .text ul {
   padding: 0;
+}
+.text ul li {
+  font-size: 16px;
+  text-indent: 0;
 }
 .text ul li:before {
   content: "— ";
@@ -266,5 +283,5 @@ body ul li {
   border-bottom: dashed 1px black;
 }
 .text ul li a {
-  color: #0C77EE;
+  color: #0070ed;
 }
