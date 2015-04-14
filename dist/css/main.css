@@ -20,7 +20,7 @@ body ul li {
 }
 
 
-.section-buttons .button {
+.button {
   margin: 10px 0;
   font-size: 13px;
   padding: 6px 20px;
@@ -49,7 +49,7 @@ body ul li {
   background: -ms-linear-gradient(top, #f2f2f2, #e2e2e2);
   background: -o-linear-gradient(top, #f2f2f2, #e2e2e2);
 }
-.section-buttons .button:hover {
+.button:hover {
   background-color: #fffffc;
   background: -webkit-gradient(linear, left top, left bottom, from(#fffffc), to(#fbfdcb));
   background: -webkit-linear-gradient(top, #fffffc, #fbfdcb);
@@ -57,25 +57,25 @@ body ul li {
   background: -ms-linear-gradient(top, #fffffc, #fbfdcb);
   background: -o-linear-gradient(top, #fffffc, #fbfdcb);
 }
-.section-buttons .button:focus {
+.button:focus {
   -webkit-box-shadow: 0 0 3px 1px #a8b3f1;
   -moz-box-shadow: 0 0 3px 1px #a8b3f1;
   box-shadow: 0 0 3px 1px #a8b3f1;
 }
-.section-buttons .button:active {
+.button:active {
   -webkit-box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25);
   -moz-box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25);
   box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25);
 }
-.section-buttons .button-small {
+.button-small {
   font-size: 11px;
   padding: 3px 15px;
 }
-.section-buttons .button-big {
+.button-big {
   font-size: 15px;
   padding: 10px 25px;
 }
-.section-buttons .button.green {
+.button.green {
   color: #fff;
   background-color: #5bbd72;
   background: -webkit-gradient(linear, left top, left bottom, from(#5bbd72), to(#46ae5f));
@@ -84,7 +84,7 @@ body ul li {
   background: -ms-linear-gradient(top, #5bbd72, #46ae5f);
   background: -o-linear-gradient(top, #5bbd72, #46ae5f);
 }
-.section-buttons .button.red {
+.button.red {
   color: #fff;
   background-color: #dc6868;
   background: -webkit-gradient(linear, left top, left bottom, from(#dc6868), to(#d23f3f));
@@ -93,7 +93,7 @@ body ul li {
   background: -ms-linear-gradient(top, #dc6868, #d23f3f);
   background: -o-linear-gradient(top, #dc6868, #d23f3f);
 }
-.section-buttons .button.yellow {
+.button.yellow {
   color: #fff;
   background-color: #f2c61f;
   background: -webkit-gradient(linear, left top, left bottom, from(#f2c61f), to(#e0b40d));
@@ -103,7 +103,7 @@ body ul li {
   background: -o-linear-gradient(top, #f2c61f, #e0b40d);
 }
 
-.section-progress .progress-bar {
+.progress-bar {
   border: 1px solid #eee;
   height: 15px;
   background: #fff;
@@ -120,7 +120,7 @@ body ul li {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
-.section-progress .progress-bar-progress {
+.progress-bar-progress {
   display: inline-block;
   height: 100%;
   background: -webkit-linear-gradient(bottom, #59ab1e 1%, #8bda1a 20%, #7bd517 22%, #3cc214 41%, #29bf14 62%, #abff58 100%);
@@ -131,7 +131,7 @@ body ul li {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
-.section-progress .progress-bar-label {
+.progress-bar-label {
   position: absolute;
   top: 0;
   left: 0;
@@ -141,16 +141,16 @@ body ul li {
   line-height: 16px;
 }
 
-.section-stars .rating {
+.rating {
   margin: 0 0 20px;
   display: inline-block;
 }
-.section-stars .rating_item {
+.rating_item {
   display: inline-block;
   margin: 0;
   line-height: 1.6;
 }
-.section-stars .rating_item_link {
+.rating_item_link {
   display: block;
   margin: 0;
   width: 16px;
@@ -159,10 +159,10 @@ body ul li {
   text-indent: -1000em;
   text-decoration: none;
 }
-.section-stars .rating_item_rating {
+.rating_item_rating {
   margin-right: 15px;
 }
-.section-stars .rating_item_active .rating_item_link,
-.section-stars .rating_item_current .rating_item_link {
+.rating_item_active .rating_item_link,
+.rating_item_current .rating_item_link {
   background: url('../img/stars.png') 0 -16px no-repeat;
 }

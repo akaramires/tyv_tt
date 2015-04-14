@@ -15,7 +15,8 @@
     var ProgressBar = function ($progressBar, options) {
         var defaults = {
             duration: 1000,
-            percent : 30
+            total   : 100,
+            current : 30
         };
 
         var $progress = null;
@@ -23,39 +24,56 @@
 
         var settings = $.extend(true, {}, defaults, options);
 
-        var draw = function (percent) {
+        var __draw = function (percent) {
             $progress
                 .animate({
                     width: percent + '%'
-                }, settings.duration)
-            ;
-
-            $label
-                .text(percent + '%')
+                }, settings.duration, function () {
+                    $label
+                        .text(percent + '%')
+                    ;
+                })
             ;
         };
 
-        var calc = function () {
+        var __parse = function () {
+            var total = settings.total;
+            var current = settings.current;
+
             if ($progressBar.attr('data-current') &&
                 $progressBar.attr('data-total')) {
 
-                var current = $progressBar.data('current');
-                var total = $progressBar.data('total');
-                var percent = 100 * current / total;
-
-                draw(percent);
-
-                return;
+                total = $progressBar.data('total');
+                current = $progressBar.data('current');
             }
 
-            draw(settings.percent);
+            __refresh(current, total);
+        };
+
+        var __refresh = function (current, total) {
+            settings.current = current;
+            settings.total = total;
+
+            return __draw(100 * current / total);
+        };
+
+        this.getTotal = function () {
+            return settings.total;
+        };
+
+        this.getCurrent = function () {
+            return settings.current;
+        };
+
+        this.refresh = function (current, total) {
+            __refresh(current, total || settings.total);
         };
 
         this.initialize = function () {
             $progress = $progressBar.find('.progress-bar-progress');
             $label = $progressBar.find('.progress-bar-label');
 
-            calc();
+            __parse();
         };
     };
 
@@ -178,14 +196,23 @@
 
 (function ($) {
 
+    // Rating
     $('.rating.default').rating();
+
     $('.rating.yellow').rating({
         background: '#ffff00'
     });
 
-    $('.progress-bar.default').progressBar();
+    // Progress
+    var progress_default = $('.progress-bar.default').progressBar();
+
     $('.progress-bar.with-value').progressBar({
-        duration: 3000
+        duration: 5000
+    });
+
+    $('.js-set-progress').on('click', function (e) {
+        progress_default.refresh($(this).data('value'), 100);
+
     });
 
 })(jQuery);

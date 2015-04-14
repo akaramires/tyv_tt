@@ -1,28 +1,26 @@
-.section-stars {
-  .rating {
-    margin: 0 0 20px;
+.rating {
+  margin: 0 0 20px;
+  display: inline-block;
+  &_item {
     display: inline-block;
-    &_item {
-      display: inline-block;
+    margin: 0;
+    line-height: 1.6;
+    &_link {
+      display: block;
       margin: 0;
-      line-height: 1.6;
-      &_link {
-        display: block;
-        margin: 0;
-        width: 16px;
-        height: 16px;
-        background: url('../img/stars.png') 0 0 no-repeat;
-        text-indent: -1000em;
-        text-decoration: none;
-      }
-      &_rating {
-        margin-right: 15px;
-      }
-      &_active,
-      &_current {
-        .rating_item_link {
-          background: url('../img/stars.png') 0 -16px no-repeat;
-        }
+      width: 16px;
+      height: 16px;
+      background: url('../img/stars.png') 0 0 no-repeat;
+      text-indent: -1000em;
+      text-decoration: none;
+    }
+    &_rating {
+      margin-right: 15px;
+    }
+    &_active,
+    &_current {
+      .rating_item_link {
+        background: url('../img/stars.png') 0 -16px no-repeat;
       }
     }
   }
