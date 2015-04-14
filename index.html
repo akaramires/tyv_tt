@@ -6,78 +6,28 @@
     <link rel="stylesheet" href="dist/css/main.min.css"/>
 </head>
 <body>
+
 <div class="stars">
-
-    <pre>
-&lt;ol class="js-rating"&gt;
-    &lt;li&gt;5&lt;/li&gt;
-    &lt;li&gt;4&lt;/li&gt;
-    &lt;li&gt;3&lt;/li&gt;
-    &lt;li&gt;2&lt;/li&gt;
-    &lt;li class="active"&gt;1&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;script type="application/javascript"&gt;
-    $('.js-rating').rating();
-&lt;/script&gt;
-    </pre>
-
-    <ol class="js-rating">
-        <li>5</li>
-        <li>4</li>
-        <li>3</li>
-        <li>2</li>
-        <li class="active">1</li>
-    </ol>
-
-    <pre>
-&lt;ol class="js-rating-gray"&gt;
-    &lt;li&gt;5&lt;/li&gt;
-    &lt;li&gt;4&lt;/li&gt;
-    &lt;li&gt;3&lt;/li&gt;
-    &lt;li class="active"&gt;2&lt;/li&gt;
-    &lt;li&gt;1&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;script type="application/javascript"&gt;
-    $('.js-rating').rating({
-        background: 'lightgray'
-    });
-&lt;/script&gt;
-    </pre>
-
-    <ol class="js-rating-gray">
-        <li>5</li>
-        <li>4</li>
-        <li>3</li>
-        <li class="active">2</li>
-        <li>1</li>
-    </ol>
-
-    <pre>
-&lt;ol class="js-rating"&gt;
-    &lt;li&gt;5&lt;/li&gt;
-    &lt;li&gt;4&lt;/li&gt;
-    &lt;li class="active"&gt;3&lt;/li&gt;
-    &lt;li&gt;2&lt;/li&gt;
-    &lt;li&gt;1&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;script type="application/javascript"&gt;
-    $('.js-rating').rating({
-        showCurrent: true
-    });
-&lt;/script&gt;
-    </pre>
-
-    <ol class="js-rating-current">
-        <li>5</li>
-        <li>4</li>
-        <li class="active">3</li>
-        <li>2</li>
-        <li>1</li>
-    </ol>
-
+    <ul class="rating">
+        <li class="rating_item rating_item_rating">
+            Рейтинг: <span>0</span>
+        </li>
+        <li class="rating_item">
+            <a href="#" class="rating_item_link">1</a>
+        </li>
+        <li class="rating_item">
+            <a href="#" class="rating_item_link">2</a>
+        </li>
+        <li class="rating_item">
+            <a href="#" class="rating_item_link">3</a>
+        </li>
+        <li class="rating_item">
+            <a href="#" class="rating_item_link">4</a>
+        </li>
+        <li class="rating_item">
+            <a href="#" class="rating_item_link">5</a>
+        </li>
+    </ul>
 </div>
 
 <script type="application/javascript" src="dist/js/main.min.js"></script>
