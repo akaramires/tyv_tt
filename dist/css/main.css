@@ -1,3 +1,10 @@
+html,
+body {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 body {
   font-family: Verdana, sans-serif;
   font-size: 12px;
@@ -11,6 +18,9 @@ body ul li {
   font-size: 12px;
   padding: 0 0 5px;
   list-style-type: none;
+}
+.wrapper {
+  padding: 5px 5px 202px;
 }
 .clearfix {
   display: block;
@@ -58,6 +68,62 @@ body ul li {
   background: #F5F5F5;
   padding: 30px;
   display: none;
+}
+.console {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 202px;
+  background-color: #ffffff;
+}
+.console_history {
+  border-top: solid 1px #CFCFCF;
+  padding: 20px 10px;
+  height: 130px;
+}
+.console_history ul {
+  max-height: 130px;
+  overflow-y: auto;
+}
+.console_history ul li {
+  position: relative;
+  padding-left: 15px;
+}
+.console_history ul li:before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.console_history ul li.error {
+  color: red;
+}
+.console_history ul li span {
+  display: block;
+}
+.console_input {
+  border-top: solid 1px #CFCFCF;
+  position: relative;
+  line-height: 30px;
+  padding: 0 10px 0 25px;
+  height: 30px;
+}
+.console_input:before {
+  content: ">";
+  height: 30px;
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+}
+.console_input input {
+  border: none;
+  width: 100%;
+}
+.console_input input:focus,
+.console_input input:active {
+  outline: none;
 }
 
 

@@ -1,5 +1,12 @@
 @fontSize: 12px;
 
+html, body {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: Verdana, sans-serif;
   font-size: @fontSize;
@@ -13,6 +20,10 @@ body {
       list-style-type: none;
     }
   }
+}
+
+.wrapper {
+  padding: 5px 5px 202px;
 }
 
 .clearfix {
@@ -68,6 +79,64 @@ body {
       background: #F5F5F5;
       padding: 30px;
       display: none;
+    }
+  }
+}
+
+.console {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 202px;
+  background-color: #ffffff;
+  &_history {
+    border-top: solid 1px #CFCFCF;
+    padding: 20px 10px;
+    height: 130px;
+    ul {
+      max-height: 130px;
+      overflow-y: auto;
+      li {
+        position: relative;
+        padding-left: 15px;
+        &:before {
+          content: ">";
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+        &.error {
+          color: red;
+        }
+
+        span {
+          display: block;
+        }
+      }
+    }
+  }
+  &_input {
+    border-top: solid 1px #CFCFCF;
+    position: relative;
+    line-height: 30px;
+    padding: 0 10px 0 25px;
+    height: 30px;
+    &:before {
+      content: ">";
+      height: 30px;
+      position: absolute;
+      left: 10px;
+      top: 0;
+      bottom: 0;
+    }
+    input {
+      border: none;
+      width: 100%;
+      &:focus,
+      &:active {
+        outline: none;
+      }
     }
   }
 }

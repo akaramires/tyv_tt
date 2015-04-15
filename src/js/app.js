@@ -34,6 +34,9 @@
                 .css('display', 'table')
             ;
         });
+
+        // Console
+        $('#console-demo').myConsole();
     });
 
 })(jQuery);
