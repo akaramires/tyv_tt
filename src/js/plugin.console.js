@@ -29,11 +29,13 @@
         this.cmd_args = [];
 
         this.CMD_HISTORY = [];
+        this.TABS = [];
 
         this.init($element);
     };
 
     MyConsole.prototype.init = function ($element) {
+        this.TABS = window.myTabs;
         this.draw($element);
     };
 
@@ -74,28 +76,39 @@
 
                     return true;
                 } else {
-                    self.handleError(cmd, 'cmd_404');
+                    self.handleError(cmd, errors.cmd_404);
                 }
 
                 self.handleCmd(cmd);
 
                 self.cmd_name = false;
                 self.cmd_args = [];
-
-                self.$history.scrollTop(10000000)
             }
         });
     };
 
-    MyConsole.prototype.handleError = function (cmd, key) {
+    MyConsole.prototype.handleError = function (cmd, message) {
         var html = [];
 
         html.push('<li class="error">');
         html.push('   <span>' + encodeURI(cmd) + '</span>');
-        html.push('   ' + errors[key]);
+        html.push('   ' + message);
         html.push('</li>');
 
         this.$history.append(html.join('\n'));
+        this.$history.scrollTop(10000000)
+    };
+
+    MyConsole.prototype.handleSuccess = function (cmd, message) {
+        var html = [];
+
+        html.push('<li>');
+        html.push('   <span>' + encodeURI(cmd) + '</span>');
+        html.push('   ' + message);
+        html.push('</li>');
+
+        this.$history.append(html.join('\n'));
+        this.$history.scrollTop(10000000)
     };
 
     MyConsole.prototype.cmdIsValid = function (cmd) {
@@ -128,9 +141,28 @@
     };
 
     MyConsole.prototype.cmd_selectTab = function (cmd) {
-        if (this.cmd_args.length !== 2) {
-            this.handleError(cmd, 'cmd_tab_args_num')
+        console.log(this.TABS.items);
+        if (this.cmd_args.length !== 1) {
+            this.handleError(cmd, errors.cmd_tab_args_num);
+
+            return false;
         }
+
+        var index = parseInt(this.cmd_args[0]);
+
+        if (index < 0 || index > this.TABS.items.length) {
+            var error = errors.cmd_tab_404
+                .replace('%query%', index)
+                .replace('%tabs_count%', this.TABS.items.length);
+
+            this.handleError(cmd, error);
+
+            return false;
+        }
+
+        var $active_tab = this.TABS.setActive(index - 1);
+
+        this.handleSuccess(cmd, 'Выбран таб №' + index + '"' + $.trim($active_tab.text()) + '".');
     };
 
     MyConsole.prototype.cmd_swapTabs = function (cmd) {

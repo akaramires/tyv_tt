@@ -34,11 +34,13 @@ return!0}function Q(a,b,d,e){if(m.acceptData(a)){var f,g,h=m.expando,i=a.nodeTyp
         this.cmd_args = [];
 
         this.CMD_HISTORY = [];
+        this.TABS = [];
 
         this.init($element);
     };
 
     MyConsole.prototype.init = function ($element) {
+        this.TABS = window.myTabs;
         this.draw($element);
     };
 
@@ -79,28 +81,39 @@ return!0}function Q(a,b,d,e){if(m.acceptData(a)){var f,g,h=m.expando,i=a.nodeTyp
 
                     return true;
                 } else {
-                    self.handleError(cmd, 'cmd_404');
+                    self.handleError(cmd, errors.cmd_404);
                 }
 
                 self.handleCmd(cmd);
 
                 self.cmd_name = false;
                 self.cmd_args = [];
-
-                self.$history.scrollTop(10000000)
             }
         });
     };
 
-    MyConsole.prototype.handleError = function (cmd, key) {
+    MyConsole.prototype.handleError = function (cmd, message) {
         var html = [];
 
         html.push('<li class="error">');
         html.push('   <span>' + encodeURI(cmd) + '</span>');
-        html.push('   ' + errors[key]);
+        html.push('   ' + message);
         html.push('</li>');
 
         this.$history.append(html.join('\n'));
+        this.$history.scrollTop(10000000)
+    };
+
+    MyConsole.prototype.handleSuccess = function (cmd, message) {
+        var html = [];
+
+        html.push('<li>');
+        html.push('   <span>' + encodeURI(cmd) + '</span>');
+        html.push('   ' + message);
+        html.push('</li>');
+
+        this.$history.append(html.join('\n'));
+        this.$history.scrollTop(10000000)
     };
 
     MyConsole.prototype.cmdIsValid = function (cmd) {
@@ -133,9 +146,28 @@ return!0}function Q(a,b,d,e){if(m.acceptData(a)){var f,g,h=m.expando,i=a.nodeTyp
     };
 
     MyConsole.prototype.cmd_selectTab = function (cmd) {
-        if (this.cmd_args.length !== 2) {
-            this.handleError(cmd, 'cmd_tab_args_num')
+        console.log(this.TABS.items);
+        if (this.cmd_args.length !== 1) {
+            this.handleError(cmd, errors.cmd_tab_args_num);
+
+            return false;
         }
+
+        var index = parseInt(this.cmd_args[0]);
+
+        if (index < 0 || index > this.TABS.items.length) {
+            var error = errors.cmd_tab_404
+                .replace('%query%', index)
+                .replace('%tabs_count%', this.TABS.items.length);
+
+            this.handleError(cmd, error);
+
+            return false;
+        }
+
+        var $active_tab = this.TABS.setActive(index - 1);
+
+        this.handleSuccess(cmd, 'Выбран таб №' + index + '"' + $.trim($active_tab.text()) + '".');
     };
 
     MyConsole.prototype.cmd_swapTabs = function (cmd) {
@@ -359,6 +391,8 @@ return!0}function Q(a,b,d,e){if(m.acceptData(a)){var f,g,h=m.expando,i=a.nodeTyp
     };
 
     var MyTabs = function () {
+        this.items = [];
+
         this.parse_url = function () {
             var url = window.location.href;
 
@@ -391,7 +425,7 @@ return!0}function Q(a,b,d,e){if(m.acceptData(a)){var f,g,h=m.expando,i=a.nodeTyp
                 window.location = '#tab-' + index;
             }
 
-            return this;
+            return $item;
         };
 
         this.assignEvents = function () {
@@ -408,6 +442,8 @@ return!0}function Q(a,b,d,e){if(m.acceptData(a)){var f,g,h=m.expando,i=a.nodeTyp
             this.setActive(this.parse_url());
 
             this.assignEvents();
+
+            this.items = $('.' + classes.single);
 
             return this;
         };

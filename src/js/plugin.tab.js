@@ -16,6 +16,8 @@
     };
 
     var MyTabs = function () {
+        this.items = [];
+
         this.parse_url = function () {
             var url = window.location.href;
 
@@ -48,7 +50,7 @@
                 window.location = '#tab-' + index;
             }
 
-            return this;
+            return $item;
         };
 
         this.assignEvents = function () {
@@ -65,6 +67,8 @@
             this.setActive(this.parse_url());
 
             this.assignEvents();
+
+            this.items = $('.' + classes.single);
 
             return this;
         };
