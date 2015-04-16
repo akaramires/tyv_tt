@@ -7,28 +7,36 @@
 
     "use strict";
 
-    var success = {};
-
-    var errors = {
-        common          : 'Что то пошло не так. Повторите пожалуйста попытку.',
-        cmd_404         : 'Извините, но команда не найдена.',
-        cmd_tab_args_num: 'Неверный вызов команды.',
-        cmd_tab_404     : 'Не удалось выбрать таб №%query%. Доступны табы с 1 по %tabs_count%.'
+    var success = {
+        tab_selected: 'Выбран таб №%number% "%title%".',
+        tab_swap    : 'Поменяли табы №%from_number% "%from_title%" и №%to_number% "%to_title%" местами.'
     };
 
-    var TabCommands = {
-        selectTab: function () {
+    var errors = {
+        common     : 'Что то пошло не так. Повторите пожалуйста попытку.',
+        cmd_404    : 'Извините, но команда не найдена.',
+        cmd_invalid: 'Неверный вызов команды.',
+        cmd_tab_404: 'Не удалось выбрать таб №%query%. Доступны табы с 1 по %tabs_count%.'
+    };
+
+    var TabCommands = function () {
+
+        var is_valid_index = function (index) {
+            return index >= 1 && index <= window.myTabs.items.length;
+        };
+
+        this.selectTab = function () {
             if (arguments.length !== 1) {
                 return {
                     status: false,
-                    msg   : errors.cmd_tab_args_num
+                    msg   : errors.cmd_invalid
                 };
             }
 
             var tabs = window.myTabs;
             var index = parseInt(arguments[0]);
 
-            if (index < 0 || index >= tabs.items.length) {
+            if (!is_valid_index(index)) {
                 var error = errors.cmd_tab_404
                     .replace('%query%', index)
                     .replace('%tabs_count%', tabs.items.length);
@@ -42,18 +50,54 @@
 
                 return {
                     status: true,
-                    msg   : 'Выбран таб №' + index + ' "' + $.trim($active_tab.text()) + '".'
+                    msg   : success.tab_selected
+                        .replace('%number%', index)
+                        .replace('%title%', $.trim($active_tab.text()))
                 };
             }
-        },
+        };
 
-        swapTabs: function () {
+        this.swapTabs = function () {
+            if (arguments.length !== 2) {
+                return {
+                    status: false,
+                    msg   : errors.cmd_invalid
+                };
+            }
 
-        },
+            var tabs = window.myTabs;
+            var from = parseInt(arguments[0]);
+            var to = parseInt(arguments[1]);
 
-        showStat: function () {
+            if (!is_valid_index(from) || !is_valid_index(to)) {
+                return {
+                    status: false,
+                    msg   : errors.cmd_tab_404
+                        .replace('%query%', from + ' и №' + to)
+                        .replace('%tabs_count%', tabs.items.length)
+                };
+            }
 
-        }
+            var $from = $(tabs.items[from - 1]);
+            var $to = $(tabs.items[to - 1]);
+
+            $to.insertBefore($from);
+
+            tabs.refreshItems();
+
+            return {
+                status: true,
+                msg   : success.tab_swap
+                    .replace('%from_number%', from)
+                    .replace('%from_title%', $.trim($from.text()))
+                    .replace('%to_number%', to)
+                    .replace('%to_title%', $.trim($to.text()))
+            };
+        };
+
+        this.showStat = function () {
+
+        };
     };
 
     var MyConsole = function ($console) {
@@ -61,7 +105,10 @@
         this.$history = null;
         this.$input = null;
 
-        this.CMD_HISTORY = [];
+        this.HISTORY = [];
+        this.HISTORY_INDEX = 0;
+
+        this.tabCmds = new TabCommands();
 
         this.init($console);
     };
@@ -85,21 +132,51 @@
             'type'     : 'text',
             'class'    : 'js_input',
             'autofocus': 'true',
-            'value'    : 'selectTab(1)'
+            'value'    : 'swapTabs(1,2)'
         }).on('keyup', function (e) {
-            if (e.keyCode != 13) {
-                return false;
+            var command;
+
+            switch (e.keyCode) {
+                case 13:
+                    if (e.target.value.length === 0) {
+                        return;
+                    }
+
+                    self.historyAdd(e.target.value);
+
+                    if (self.cmdIsValid()) {
+                        self.exec();
+                    } else {
+                        self.message(errors.cmd_404);
+                    }
+
+                    e.target.value = '';
+                    self.HISTORY_INDEX = 0;
+
+                    break;
+                case 38:
+                    if (self.HISTORY.length > 0) {
+                        command = self.HISTORY[self.HISTORY.length - self.HISTORY_INDEX - 1];
+
+                        if (command !== undefined) {
+                            e.target.value = command;
+                            self.HISTORY_INDEX++;
+                        }
+                    }
+
+                    break;
+                case 40:
+                    if (self.HISTORY.length > 0) {
+                        command = self.HISTORY[self.HISTORY.length - self.HISTORY_INDEX + 1];
+
+                        if (command !== undefined) {
+                            e.target.value = command;
+                            self.HISTORY_INDEX--;
+                        }
+                    }
+
+                    break;
             }
-
-            self.historyAdd(e.target.value);
-
-            if (self.cmdIsValid()) {
-                self.exec();
-            } else {
-                self.message(errors.cmd_404);
-            }
-
-            e.target.value = '';
         });
 
         this.$console
@@ -118,7 +195,7 @@
     };
 
     MyConsole.prototype.currentCmd = function () {
-        return this.CMD_HISTORY[this.CMD_HISTORY.length - 1];
+        return this.HISTORY[this.HISTORY.length - 1];
     };
 
     MyConsole.prototype.normalizeCmd = function (cmd) {
@@ -142,7 +219,7 @@
     };
 
     MyConsole.prototype.exec = function (cmd) {
-        var response = eval('TabCommands.' + this.normalizeCmd(cmd));
+        var response = eval('this.tabCmds.' + this.normalizeCmd(cmd));
 
         this.message(response.msg, response.status ? 'success' : 'error');
     };
@@ -156,15 +233,15 @@
             return false;
         }
 
-        return $.inArray(matches[1], Object.keys(TabCommands)) > -1;
+        return $.inArray(matches[1], Object.keys(this.tabCmds)) > -1;
     };
 
     MyConsole.prototype.historyAdd = function (cmd) {
-        if (this.CMD_HISTORY.length == 10) {
-            this.CMD_HISTORY.shift();
+        if (this.HISTORY.length == 10) {
+            this.HISTORY.shift();
         }
 
-        this.CMD_HISTORY.push(cmd);
+        this.HISTORY.push(cmd);
     };
 
     $.fn.myConsole = function () {

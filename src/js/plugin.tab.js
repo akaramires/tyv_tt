@@ -72,6 +72,10 @@
 
             return this;
         };
+
+        this.refreshItems = function () {
+            this.items = $('.' + classes.single);
+        };
     };
 
     $.fn.myTabs = function () {
