@@ -82,31 +82,39 @@ body ul li {
   padding: 20px 10px;
   height: 130px;
 }
-.console_history ul {
+.console_history > ul {
   max-height: 130px;
   overflow-y: auto;
 }
-.console_history ul li {
+.console_history > ul > li {
   position: relative;
   padding-left: 15px;
   padding-bottom: 15px;
 }
-.console_history ul li:before {
+.console_history > ul > li:before {
   content: ">";
   color: #000000;
   position: absolute;
   left: 0;
   top: 0;
 }
-.console_history ul li.error {
+.console_history > ul > li.error {
   color: red;
 }
-.console_history ul li.success {
+.console_history > ul > li.success {
   color: green;
 }
-.console_history ul li span {
+.console_history > ul > li span {
   color: #000000;
   display: block;
+  padding-bottom: 5px;
+}
+.console_history > ul > li ul {
+  display: block;
+  padding: 5px 25px;
+}
+.console_history > ul > li ul li {
+  padding: 0;
 }
 .console_input {
   border-top: solid 1px #CFCFCF;

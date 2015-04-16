@@ -21,8 +21,10 @@
 
     var TabCommands = function () {
 
+        var PAGE_STARTED_AT = new Date().getTime();
+
         var is_valid_index = function (index) {
-            return index >= 1 && index <= window.myTabs.items.length;
+            return index >= 0 && index < window.myTabs.items.length;
         };
 
         this.selectTab = function () {
@@ -45,16 +47,16 @@
                     status: false,
                     msg   : error
                 };
-            } else {
-                var $active_tab = tabs.setActive(index - 1);
-
-                return {
-                    status: true,
-                    msg   : success.tab_selected
-                        .replace('%number%', index)
-                        .replace('%title%', $.trim($active_tab.text()))
-                };
             }
+
+            var $active_tab = tabs.setActive(index);
+
+            return {
+                status: true,
+                msg   : success.tab_selected
+                    .replace('%number%', index)
+                    .replace('%title%', $.trim($active_tab.text()))
+            };
         };
 
         this.swapTabs = function () {
@@ -78,8 +80,8 @@
                 };
             }
 
-            var $from = $(tabs.items[from - 1]);
-            var $to = $(tabs.items[to - 1]);
+            var $from = $(tabs.items[from]);
+            var $to = $(tabs.items[to]);
 
             $to.insertBefore($from);
 
@@ -96,7 +98,33 @@
         };
 
         this.showStat = function () {
+            var now = new Date().getTime();
+            var page_age = Utils.time_difference(now - PAGE_STARTED_AT);
+            var tabs = window.myTabs;
 
+            var ages_html = [];
+
+            for (var key in tabs.tabs_age) {
+                var age = tabs.tabs_age[key].age;
+
+                tabs.tabs_age[key].started && (age += (now - tabs.tabs_age[key].started));
+
+                if (age > 0) {
+                    ages_html.push('<li>');
+                    ages_html.push((key.substr(4)) + ' "' + tabs.tabs_age[key].title + '": ');
+                    ages_html.push(Utils.time_difference(age));
+                    ages_html.push('</li>');
+                }
+            }
+
+            if (ages_html.length > 0) {
+                ages_html = '<br>Детализация времени просмотра табов: <ul>' + ages_html.join('') + '</ul>';
+            }
+
+            return {
+                status: true,
+                msg   : 'Общее время работы со страницей: ' + page_age + ages_html
+            };
         };
     };
 
@@ -132,7 +160,7 @@
             'type'     : 'text',
             'class'    : 'js_input',
             'autofocus': 'true',
-            'value'    : 'swapTabs(1,2)'
+            'value'    : 'showStat()'
         }).on('keyup', function (e) {
             var command;
 
@@ -163,7 +191,6 @@
                             self.HISTORY_INDEX++;
                         }
                     }
-
                     break;
                 case 40:
                     if (self.HISTORY.length > 0) {
@@ -174,7 +201,6 @@
                             self.HISTORY_INDEX--;
                         }
                     }
-
                     break;
             }
         });

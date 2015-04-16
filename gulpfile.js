@@ -34,6 +34,7 @@ var paths = {
 gulp.task('js:build', function () {
     return gulp.src([
         paths.bower.jquery,
+        paths.src.js + '/utils.js',
         paths.src.js + '/plugin.*.js',
         paths.src.js + '/app.js'
     ])

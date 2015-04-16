@@ -94,10 +94,10 @@ body {
     border-top: solid 1px #CFCFCF;
     padding: 20px 10px;
     height: 130px;
-    ul {
+    > ul {
       max-height: 130px;
       overflow-y: auto;
-      li {
+      > li {
         position: relative;
         padding-left: 15px;
         padding-bottom: 15px;
@@ -119,6 +119,15 @@ body {
         span {
           color: #000000;
           display: block;
+          padding-bottom: 5px;
+        }
+
+        ul {
+          display: block;
+          padding: 5px 25px;
+          li {
+            padding: 0;
+          }
         }
       }
     }

@@ -17,18 +17,7 @@
 
     var MyTabs = function () {
         this.items = [];
-
-        this.parse_url = function () {
-            var url = window.location.href;
-
-            if (url.indexOf("#") < 0) {
-                return 0;
-            }
-
-            var hash = url.substring(url.indexOf("#"));
-
-            return parseInt(hash.substring(5));
-        };
+        this.tabs_age = {};
 
         this.setActive = function (index) {
             var $item = $('.' + classes.wrapper).find('.' + classes.titles + ' .' + classes.single + ':eq(' + index + ')');
@@ -50,7 +39,24 @@
                 window.location = '#tab-' + index;
             }
 
+            this.tab_add_age(index);
+
             return $item;
+        };
+
+        this.tab_add_age = function (index) {
+            var now = new Date().getTime();
+
+            for (var key in this.tabs_age) {
+                if (this.tabs_age[key].started) {
+                    this.tabs_age[key].age += (now - this.tabs_age[key].started);
+                    this.tabs_age[key].started = false;
+                } else {
+                    if (key == 'tab_' + index) {
+                        this.tabs_age[key].started = now;
+                    }
+                }
+            }
         };
 
         this.assignEvents = function () {
@@ -64,11 +70,19 @@
         };
 
         this.init = function () {
-            this.setActive(this.parse_url());
-
-            this.assignEvents();
+            var self = this;
 
             this.items = $('.' + classes.single);
+            this.items.each(function () {
+                self.tabs_age['tab_' + $(this).index()] = {
+                    title  : $.trim($(this).text()),
+                    age    : 0,
+                    started: false
+                };
+            });
+
+            this.assignEvents();
+            this.setActive(Utils.get_hash() ? Utils.get_hash().substring(5) : 0);
 
             return this;
         };
@@ -88,4 +102,5 @@
 
     $.fn.myTabs();
 
-})(jQuery);
+})
+(jQuery);
