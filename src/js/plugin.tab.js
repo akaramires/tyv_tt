@@ -15,8 +15,10 @@
         active : 'tabs_titles_single_active'
     };
 
-    var Tabs = function () {
-        var parse_url = function () {
+    var MyTabs = function () {
+        this.items = [];
+
+        this.parse_url = function () {
             var url = window.location.href;
 
             if (url.indexOf("#") < 0) {
@@ -28,8 +30,8 @@
             return parseInt(hash.substring(5));
         };
 
-        var setActive = function (index) {
-            var $item = $('.' + classes.wrapper).find('.' + classes.titles + ' .' + classes.single + ':eq(' + (index ? index - 1 : index) + ')');
+        this.setActive = function (index) {
+            var $item = $('.' + classes.wrapper).find('.' + classes.titles + ' .' + classes.single + ':eq(' + index + ')');
             var target = $item.find('.' + classes.link).attr('href');
 
             $item
@@ -44,52 +46,42 @@
                 .hide()
             ;
 
-            if (index) {
+            if (index !== undefined) {
                 window.location = '#tab-' + index;
             }
 
-            return this;
+            return $item;
         };
 
-        var assignEvents = function () {
+        this.assignEvents = function () {
             var self = this;
 
             $('.' + classes.link).on('click', function (e) {
                 e.preventDefault();
 
-                setActive($(this).parent().index() + 1);
+                self.setActive($(this).parent().index());
             });
         };
 
-        this.publicMethods = function () {
-            this.init = function () {
-                this.setActive(parse_url());
+        this.init = function () {
+            this.setActive(this.parse_url());
 
-                assignEvents();
+            this.assignEvents();
 
-                return this;
-            };
-
-            this.setActive = setActive;
+            this.items = $('.' + classes.single);
 
             return this;
         };
     };
 
-    $.fn.tabs = function () {
-        if ($('.' + classes.wrapper).length < 1) {
-            return false;
+    $.fn.myTabs = function () {
+        if (window.myTabs !== undefined) {
+            return window.myTabs;
         }
 
-        var $tabs = new Tabs();
-
-        new $tabs.publicMethods()
-            .init()
-        ;
-
-        return $tabs;
+        return window.myTabs = new MyTabs().init();
     };
 
-    $.fn.tabs();
+    $.fn.myTabs();
 
 })(jQuery);
