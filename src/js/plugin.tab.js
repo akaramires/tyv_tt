@@ -25,7 +25,7 @@
 
             var hash = url.substring(url.indexOf("#"));
 
-            return parseInt(hash.substring(4));
+            return parseInt(hash.substring(5));
         };
 
         var setActive = function (index) {
@@ -45,7 +45,7 @@
             ;
 
             if (index) {
-                window.location = '#tab' + index;
+                window.location = '#tab-' + index;
             }
 
             return this;
