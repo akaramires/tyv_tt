@@ -159,8 +159,7 @@
         this.$input = $('<input>', {
             'type'     : 'text',
             'class'    : 'js_input',
-            'autofocus': 'true',
-            'value'    : 'showStat()'
+            'autofocus': 'true'
         }).on('keyup', function (e) {
             var command;
 
