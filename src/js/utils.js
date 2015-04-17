@@ -37,14 +37,16 @@ var Utils = {
 
         var output = [];
 
-        output.push(days ? days + ' ' + Utils.declension(days, ['день', 'дня', 'дней']) : '');
-        output.push(hours ? hours + ' ' + Utils.declension(hours, ['час', 'часа', 'часов']) : '');
-        output.push(minutes ? minutes + ' ' + Utils.declension(minutes, ['минута', 'минуты', 'минут']) : '');
+        output.push(days    ? days    + ' ' + Utils.declension(days,    ['день',    'дня',     'дней']  ) : '');
+        output.push(hours   ? hours   + ' ' + Utils.declension(hours,   ['час',     'часа',    'часов'] ) : '');
+        output.push(minutes ? minutes + ' ' + Utils.declension(minutes, ['минута',  'минуты',  'минут'] ) : '');
         output.push(seconds ? seconds + ' ' + Utils.declension(seconds, ['секунда', 'секунды', 'секунд']) : '');
 
         output = output.filter(Boolean);
-        
-        return output.length > 0 ? output.join(' ') : '0 секунд';
+
+        return output.length > 0
+            ? output.join(' ')
+            : '0 секунд';
     },
 
     get_hash: function () {

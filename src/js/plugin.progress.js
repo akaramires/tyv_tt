@@ -11,73 +11,66 @@
         var defaults = {
             duration: 1000,
             total   : 100,
-            current : 30
+            current : 30,
+
+            selector_progress: '.progress-bar-progress',
+            selector_label   : '.progress-bar-label',
+
+            data_attr_current: 'current',
+            data_attr_total  : 'total'
         };
 
-        var $progress = null;
-        var $label = null;
+        this.$progressBar = $progressBar;
+        this.$progress = null;
+        this.$label = null;
 
-        var settings = $.extend(true, {}, defaults, options);
+        this.settings = $.extend(true, {}, defaults, options);
+    };
 
-        var __draw = function (percent) {
-            $progress
-                .animate({
-                    width: percent + '%'
-                }, settings.duration, function () {
-                    $label
-                        .text(percent + '%')
-                    ;
-                })
-            ;
-        };
+    ProgressBar.prototype.getLabel = function (value) {
+        return value + '%';
+    };
 
-        var __parse = function () {
-            var total = settings.total;
-            var current = settings.current;
+    ProgressBar.prototype.draw = function (percent) {
+        var self = this;
 
-            if ($progressBar.attr('data-current') &&
-                $progressBar.attr('data-total')) {
+        return self.$progress
+            .animate({
+                width: self.getLabel(percent)
+            }, self.settings.duration, function () {
+                self.$label
+                    .text(self.getLabel(percent))
+                ;
+            });
+    };
 
-                total = $progressBar.data('total');
-                current = $progressBar.data('current');
-            }
+    ProgressBar.prototype.parse = function () {
+        var tmp_current = this.$progressBar.data(this.settings.data_attr_current);
+        var tmp_total = this.$progressBar.data(this.settings.data_attr_total);
 
-            __refresh(current, total);
-        };
+        return this.refresh(tmp_current, tmp_total);
+    };
 
-        var __refresh = function (current, total) {
-            settings.current = current;
-            settings.total = total;
+    ProgressBar.prototype.refresh = function (current, total) {
+        var tmp_current = current || this.settings.current;
+        var tmp_total = total || this.settings.total;
 
-            return __draw(100 * current / total);
-        };
+        return this.draw(100 * tmp_current / tmp_total);
+    };
 
-        this.getTotal = function () {
-            return settings.total;
-        };
+    ProgressBar.prototype.initialize = function () {
+        this.$progress = this.$progressBar.find(this.settings.selector_progress);
+        this.$label = this.$progressBar.find(this.settings.selector_label);
 
-        this.getCurrent = function () {
-            return settings.current;
-        };
-
-        this.refresh = function (current, total) {
-            __refresh(current, total || settings.total);
-        };
-
-        this.initialize = function () {
-            $progress = $progressBar.find('.progress-bar-progress');
-            $label = $progressBar.find('.progress-bar-label');
-
-            __parse();
-        };
+        return this.parse();
     };
 
     $.fn.progressBar = function (options) {
-        var $progressBar = new ProgressBar(this, options);
+        var $pBar = new ProgressBar(this, options);
 
-        $progressBar.initialize();
+        $pBar.initialize();
 
-        return $progressBar;
+        return $pBar;
     };
 
 })(jQuery);

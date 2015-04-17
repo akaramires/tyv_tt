@@ -18,6 +18,7 @@
     var MyTabs = function () {
         this.items = [];
         this.tabs_age = {};
+        this.page_age = 0;
 
         this.setActive = function (index) {
             var $item = $('.' + classes.wrapper).find('.' + classes.titles + ' .' + classes.single + ':eq(' + index + ')');
@@ -46,6 +47,10 @@
 
         this.tab_add_age = function (index) {
             var now = new Date().getTime();
+
+            if (this.page_age === 0) {
+                this.page_age = now;
+            }
 
             for (var key in this.tabs_age) {
                 if (this.tabs_age[key].started) {

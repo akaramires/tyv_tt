@@ -6,7 +6,6 @@ var uglify = require('gulp-uglify');
 
 // CSS
 var less = require('gulp-less');
-var prefixer = require('gulp-autoprefixer');
 var minifycss = require('gulp-minify-css');
 
 // UTIL

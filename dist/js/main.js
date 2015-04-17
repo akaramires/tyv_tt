@@ -42,14 +42,16 @@ var Utils = {
 
         var output = [];
 
-        output.push(days ? days + ' ' + Utils.declension(days, ['день', 'дня', 'дней']) : '');
-        output.push(hours ? hours + ' ' + Utils.declension(hours, ['час', 'часа', 'часов']) : '');
-        output.push(minutes ? minutes + ' ' + Utils.declension(minutes, ['минута', 'минуты', 'минут']) : '');
+        output.push(days    ? days    + ' ' + Utils.declension(days,    ['день',    'дня',     'дней']  ) : '');
+        output.push(hours   ? hours   + ' ' + Utils.declension(hours,   ['час',     'часа',    'часов'] ) : '');
+        output.push(minutes ? minutes + ' ' + Utils.declension(minutes, ['минута',  'минуты',  'минут'] ) : '');
         output.push(seconds ? seconds + ' ' + Utils.declension(seconds, ['секунда', 'секунды', 'секунд']) : '');
 
         output = output.filter(Boolean);
-        
-        return output.length > 0 ? output.join(' ') : '0 секунд';
+
+        return output.length > 0
+            ? output.join(' ')
+            : '0 секунд';
     },
 
     get_hash: function () {
@@ -85,13 +87,15 @@ var Utils = {
 
     var TabCommands = function () {
 
-        var PAGE_STARTED_AT = new Date().getTime();
-
-        var is_valid_index = function (index) {
+        this.is_valid_index = function (index) {
             return index >= 0 && index < window.myTabs.items.length;
         };
 
         this.selectTab = function () {
+            var tabs = null;
+            var index = null;
+            var $active_tab = null;
+
             if (arguments.length !== 1) {
                 return {
                     status: false,
@@ -99,10 +103,10 @@ var Utils = {
                 };
             }
 
-            var tabs = window.myTabs;
-            var index = parseInt(arguments[0]);
+            tabs = window.myTabs;
+            index = parseInt(arguments[ 0 ]);
 
-            if (!is_valid_index(index)) {
+            if (!this.is_valid_index(index)) {
                 var error = errors.cmd_tab_404
                     .replace('%query%', index)
                     .replace('%tabs_count%', tabs.items.length);
@@ -113,7 +117,7 @@ var Utils = {
                 };
             }
 
-            var $active_tab = tabs.setActive(index);
+            $active_tab = tabs.setActive(index);
 
             return {
                 status: true,
@@ -124,6 +128,12 @@ var Utils = {
         };
 
         this.swapTabs = function () {
+            var tabs = null;
+            var from = null;
+            var to = null;
+            var $from = null;
+            var $to = null;
+
             if (arguments.length !== 2) {
                 return {
                     status: false,
@@ -131,11 +141,11 @@ var Utils = {
                 };
             }
 
-            var tabs = window.myTabs;
-            var from = parseInt(arguments[0]);
-            var to = parseInt(arguments[1]);
+            tabs = window.myTabs;
+            from = parseInt(arguments[ 0 ]);
+            to = parseInt(arguments[ 1 ]);
 
-            if (!is_valid_index(from) || !is_valid_index(to)) {
+            if (!this.is_valid_index(from) || !this.is_valid_index(to)) {
                 return {
                     status: false,
                     msg   : errors.cmd_tab_404
@@ -144,11 +154,10 @@ var Utils = {
                 };
             }
 
-            var $from = $(tabs.items[from]);
-            var $to = $(tabs.items[to]);
+            $from = $(tabs.items[ from ]);
+            $to = $(tabs.items[ to ]);
 
             $to.insertBefore($from);
-
             tabs.refreshItems();
 
             return {
@@ -163,19 +172,18 @@ var Utils = {
 
         this.showStat = function () {
             var now = new Date().getTime();
-            var page_age = Utils.time_difference(now - PAGE_STARTED_AT);
             var tabs = window.myTabs;
-
+            var page_age = Utils.time_difference(now - tabs.page_age);
             var ages_html = [];
 
             for (var key in tabs.tabs_age) {
-                var age = tabs.tabs_age[key].age;
+                var age = tabs.tabs_age[ key ].age;
 
-                tabs.tabs_age[key].started && (age += (now - tabs.tabs_age[key].started));
+                tabs.tabs_age[ key ].started && (age += (now - tabs.tabs_age[ key ].started));
 
                 if (age > 0) {
                     ages_html.push('<li>');
-                    ages_html.push((key.substr(4)) + ' "' + tabs.tabs_age[key].title + '": ');
+                    ages_html.push((key.substr(4)) + ' "' + tabs.tabs_age[ key ].title + '": ');
                     ages_html.push(Utils.time_difference(age));
                     ages_html.push('</li>');
                 }
@@ -247,7 +255,7 @@ var Utils = {
                     break;
                 case 38:
                     if (self.HISTORY.length > 0) {
-                        command = self.HISTORY[self.HISTORY.length - self.HISTORY_INDEX - 1];
+                        command = self.HISTORY[ self.HISTORY.length - self.HISTORY_INDEX - 1 ];
 
                         if (command !== undefined) {
                             e.target.value = command;
@@ -257,7 +265,7 @@ var Utils = {
                     break;
                 case 40:
                     if (self.HISTORY.length > 0) {
-                        command = self.HISTORY[self.HISTORY.length - self.HISTORY_INDEX + 1];
+                        command = self.HISTORY[ self.HISTORY.length - self.HISTORY_INDEX + 1 ];
 
                         if (command !== undefined) {
                             e.target.value = command;
@@ -284,7 +292,7 @@ var Utils = {
     };
 
     MyConsole.prototype.currentCmd = function () {
-        return this.HISTORY[this.HISTORY.length - 1];
+        return this.HISTORY[ this.HISTORY.length - 1 ];
     };
 
     MyConsole.prototype.normalizeCmd = function (cmd) {
@@ -294,9 +302,10 @@ var Utils = {
     };
 
     MyConsole.prototype.message = function (message, type, cmd) {
-        type = type === undefined || $.inArray(type, ['success', 'error']) < 0
+        type = $.inArray(type, [ 'success', 'error' ]) < 0
             ? 'error'
-            : type;
+            : type === 'success' ? 'success' : 'error';
+
         cmd = this.normalizeCmd(cmd);
 
         $('<li/>', {
@@ -322,7 +331,7 @@ var Utils = {
             return false;
         }
 
-        return $.inArray(matches[1], Object.keys(this.tabCmds)) > -1;
+        return $.inArray(matches[ 1 ], Object.keys(this.tabCmds)) > -1;
     };
 
     MyConsole.prototype.historyAdd = function (cmd) {
@@ -353,73 +362,66 @@ var Utils = {
         var defaults = {
             duration: 1000,
             total   : 100,
-            current : 30
+            current : 30,
+
+            selector_progress: '.progress-bar-progress',
+            selector_label   : '.progress-bar-label',
+
+            data_attr_current: 'current',
+            data_attr_total  : 'total'
         };
 
-        var $progress = null;
-        var $label = null;
+        this.$progressBar = $progressBar;
+        this.$progress = null;
+        this.$label = null;
 
-        var settings = $.extend(true, {}, defaults, options);
+        this.settings = $.extend(true, {}, defaults, options);
+    };
 
-        var __draw = function (percent) {
-            $progress
-                .animate({
-                    width: percent + '%'
-                }, settings.duration, function () {
-                    $label
-                        .text(percent + '%')
-                    ;
-                })
-            ;
-        };
+    ProgressBar.prototype.getLabel = function (value) {
+        return value + '%';
+    };
 
-        var __parse = function () {
-            var total = settings.total;
-            var current = settings.current;
+    ProgressBar.prototype.draw = function (percent) {
+        var self = this;
 
-            if ($progressBar.attr('data-current') &&
-                $progressBar.attr('data-total')) {
+        return self.$progress
+            .animate({
+                width: self.getLabel(percent)
+            }, self.settings.duration, function () {
+                self.$label
+                    .text(self.getLabel(percent))
+                ;
+            });
+    };
 
-                total = $progressBar.data('total');
-                current = $progressBar.data('current');
-            }
+    ProgressBar.prototype.parse = function () {
+        var tmp_current = this.$progressBar.data(this.settings.data_attr_current);
+        var tmp_total = this.$progressBar.data(this.settings.data_attr_total);
 
-            __refresh(current, total);
-        };
+        return this.refresh(tmp_current, tmp_total);
+    };
 
-        var __refresh = function (current, total) {
-            settings.current = current;
-            settings.total = total;
+    ProgressBar.prototype.refresh = function (current, total) {
+        var tmp_current = current || this.settings.current;
+        var tmp_total = total || this.settings.total;
 
-            return __draw(100 * current / total);
-        };
+        return this.draw(100 * tmp_current / tmp_total);
+    };
 
-        this.getTotal = function () {
-            return settings.total;
-        };
+    ProgressBar.prototype.initialize = function () {
+        this.$progress = this.$progressBar.find(this.settings.selector_progress);
+        this.$label = this.$progressBar.find(this.settings.selector_label);
 
-        this.getCurrent = function () {
-            return settings.current;
-        };
-
-        this.refresh = function (current, total) {
-            __refresh(current, total || settings.total);
-        };
-
-        this.initialize = function () {
-            $progress = $progressBar.find('.progress-bar-progress');
-            $label = $progressBar.find('.progress-bar-label');
-
-            __parse();
-        };
+        return this.parse();
     };
 
     $.fn.progressBar = function (options) {
-        var $progressBar = new ProgressBar(this, options);
+        var $pBar = new ProgressBar(this, options);
 
-        $progressBar.initialize();
+        $pBar.initialize();
 
-        return $progressBar;
+        return $pBar;
     };
 
 })(jQuery);
@@ -548,6 +550,7 @@ var Utils = {
     var MyTabs = function () {
         this.items = [];
         this.tabs_age = {};
+        this.page_age = 0;
 
         this.setActive = function (index) {
             var $item = $('.' + classes.wrapper).find('.' + classes.titles + ' .' + classes.single + ':eq(' + index + ')');
@@ -576,6 +579,10 @@ var Utils = {
 
         this.tab_add_age = function (index) {
             var now = new Date().getTime();
+
+            if (this.page_age === 0) {
+                this.page_age = now;
+            }
 
             for (var key in this.tabs_age) {
                 if (this.tabs_age[key].started) {
